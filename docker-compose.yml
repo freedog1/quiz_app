@@ -1,0 +1,27 @@
+version: '3.4'
+
+services:
+  quiz-project:
+    image: quiz-project
+    build: .
+    #environment: ←を削除
+      #NODE_ENV: production ←を削除
+    ports:
+      - 3000:3000 #接続するポート番号。お好きな番号でいけます。
+
+  my_mysql:
+    image: mysql #もととなるイメージ。ここではmysql
+    platform: linux/amd64
+    environment: #最小限の記述にしています。他にも環境設定は可能です。
+      MYSQL_USER: root
+      MYSQL_ROOT_PASSWORD: root #rootパスワード。今回はrootにしました。
+      MYSQL_DATABASE: my_mysql_db #作成するデータベース。今回はmy_mysql_dbにしました。
+      TZ: "Asia/Tokyo"
+    ports:
+      - "3306:3306" #接続するポート番号。お好きな番号でいけます。
+    volumes:
+      - my_volume:/var/lib/mysql    #第３の場所my_volumeをコンテナ内に同期するコード
+
+#第3の場所にデータを置いておく場所をつくる。こちらも忘れずに追記してください。
+volumes: 
+  my_volume:
